@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6ee4333f-8f52-473f-8f1c-458cf3ce24a7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/designPattern/autoload.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/designPattern/combination/index.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/designPattern/observer/BasicWidget.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/designPattern/observer/DataSource.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/designPattern/observer/FancyWidget.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/designPattern/observer/Observable.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/designPattern/observer/ObserverInterface.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/designPattern/observer/Widget.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/designPattern/observer/index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="6ee4333f-8f52-473f-8f1c-458cf3ce24a7" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -111,8 +99,8 @@
       <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/designPattern/combination/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-881">
-              <caret line="57" column="36" lean-forward="true" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
+            <state relative-caret-position="1511">
+              <caret line="113" column="23" lean-forward="false" selection-start-line="113" selection-start-column="9" selection-end-line="113" selection-end-column="23" />
               <folding>
                 <marker date="1525875057349" expanded="true" signature="1001:1055" ph="..." />
                 <marker date="1525875057349" expanded="true" signature="1001:1145" ph="..." />
@@ -322,12 +310,12 @@
       <workItem from="1525754274746" duration="4410000" />
       <workItem from="1525766492576" duration="93000" />
       <workItem from="1525841677212" duration="4885000" />
-      <workItem from="1525869158618" duration="5902000" />
+      <workItem from="1525869158618" duration="5944000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19962000" />
+    <option name="totallyTimeSpent" value="20004000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -716,8 +704,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/designPattern/combination/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-881">
-          <caret line="57" column="36" lean-forward="true" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
+        <state relative-caret-position="1511">
+          <caret line="113" column="23" lean-forward="false" selection-start-line="113" selection-start-column="9" selection-end-line="113" selection-end-column="23" />
           <folding>
             <marker date="1525875057349" expanded="true" signature="1001:1055" ph="..." />
             <marker date="1525875057349" expanded="true" signature="1001:1145" ph="..." />
