@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<conf>
-    <item name="user">user</item>
-    <item name="pass">pass</item>
-    <item name="host">host</item>
-<item name="newpass">newpass</item></conf>

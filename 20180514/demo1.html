@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--这一行是声明网页的编码  utf8中文-->
+    <meta charset="UTF-8">
+    <!--网页标题-->
+    <title>Title</title>
+    <!--CSS 用来写网页的样式  style 标签-->
+    <style>
+        /* * 是通配符*/
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        /*这是 class=“div1” 的 样式*/
+        .div1{
+            width: 350px;
+            height: 150px;
+            border: 10px solid goldenrod;
+            margin: 100px auto;
+        }
+        /*这是 class=“div2” 的 样式*/
+        .div2{
+            width: 220px;
+            height: 80px;
+            border: 5px solid darkolivegreen;
+        }
+        /*这是 class=“div2” 下级img的 样式*/
+        .div2 img{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <!--javascript  用来写页面动态效果-->
+    <script>
+        /*JS中调用函数 其实和PHP也一样*/
+        hello();
+        /*先写一个简单的函数*/
+        function hello()
+        {
+            alert("Hello world");
+        }
+    </script>
+</head>
+<body>
+    <!-- 可以根据class的值来定义 当前节点“div”的样式-->
+    <div class="div1">
+        <!--标签可以无限嵌套-->
+        <div class="div2">
+            <img src="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3522360549,4053793791&fm=173&app=25&f=JPEG?w=218&h=146&s=0FB7C907B0EE51BDD4247DCA03007012" alt="这是图片的文字说明">
+        </div>
+    </div>
+
+</body>
+</html>
