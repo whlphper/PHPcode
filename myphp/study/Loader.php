@@ -27,7 +27,7 @@ class Loader{
     public static function autoload($class)
     {
         if(strpos($class,'study') !== -1){
-            $file = MY_PATH.str_replace('\\','/',$class).EXT;
+            $file = MY_PATH.str_replace('\\',DS,$class).EXT;
             if(self::findFile(MY_PATH.$class.EXT)){
                 __include_file($file);
             }
@@ -51,7 +51,6 @@ class Loader{
             echo $e->getMessage();
             exit;
         }
-
     }
 }
 
