@@ -34,10 +34,13 @@ abstract class DbInterface{
     protected static $group;
     protected static $having;
     protected static $regular;
+    protected static $transaction;
+    protected static $commit;
+    protected static $rollback;
 
     abstract public function connect();
 
-    abstract function query();
+    abstract function query($sql);
 
     abstract function all();
 
@@ -46,6 +49,14 @@ abstract class DbInterface{
     abstract function column($field);
 
     abstract function value($field);
+
+    abstract function insert($data);
+
+    abstract function insertAll($data);
+
+    abstract function save($data);
+
+    abstract function delete();
 
     public function __get($name)
     {

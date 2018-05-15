@@ -39,7 +39,7 @@ class Mysql extends DbInterface{
         }
     }
 
-    public function query()
+    public function query($sql)
     {
 
     }
@@ -52,6 +52,9 @@ class Mysql extends DbInterface{
      */
     public function buildSql($limit=false,$column=false)
     {
+        if(empty(self::$table)){
+            throw new \PDOException('table is undifined');
+        }
         // 拼接SQL语句
         if(!$column){
             $sql = 'SELECT '.self::$field.' FROM '.self::$table;
@@ -59,30 +62,12 @@ class Mysql extends DbInterface{
             $sql = 'SELECT '.$column.' FROM '.self::$table;
         }
         // 别名
-        $sql .= empty(self::$alias) ?: ' AS '.self::$alias;
+        $sql .= $this->aliasSql();
         // 连接查询
         // // [['Table2 b','a.id=b.id','left/right']]
-        if(!empty($join = self::$join)){
-            foreach($join as $k=>$v){
-                $joinTable = explode(' ',$v[0]);
-                $sql .= isset($v[2]) ? ' '.$v[2] : ' INNER ' ;
-                $sql .= ' ' . ' JOIN ' .$joinTable[0] . ' AS '.$joinTable[1] . ' ON ' . $v[1];
-            }
-        }
+        $sql .= $this->joinSql();
         // where 查询条件
-        if(!empty($where = self::$where)){
-            $sql .= ' WHERE ';
-            $index= 0;
-            foreach($where as $k=>$expression){
-                $sql .= $index != 0 ? ' AND '  : '';
-                if(is_array($expression)){
-                    $sql .= $k.' '. $expression[0] . ' ' . $expression[1];
-                }else{
-                    $sql .= $k.' = '.$expression;
-                }
-                ++$index;
-            }
-        }
+        $sql .= $this->whereSql();
         // group by
         if(!empty(self::$group)){
             $sql .= ' GROUP BY '.self::$group;
@@ -106,7 +91,43 @@ class Mysql extends DbInterface{
         return $sql;
     }
 
+    public function aliasSql()
+    {
+        return empty(self::$alias) ? '': ' AS '.self::$alias;
+    }
 
+    public function joinSql()
+    {
+        $sql = '';
+        if(!empty($join = self::$join)){
+            foreach($join as $k=>$v){
+                $joinTable = explode(' ',$v[0]);
+                $sql .= isset($v[2]) ? ' '.$v[2] : ' INNER ' ;
+                $sql .= ' ' . ' JOIN ' .$joinTable[0] . ' AS '.$joinTable[1] . ' ON ' . $v[1];
+            }
+        }
+        return $sql;
+    }
+
+    public function whereSql()
+    {
+        $sql = '';
+        if(!empty($where = self::$where)){
+            $sql .= ' WHERE ';
+            $index= 0;
+            foreach($where as $k=>$expression){
+                $sql .= $index != 0 ? ' AND '  : '';
+                if(is_array($expression)){
+                    $sql .= $k.' '. $expression[0] . ' ';
+                    $sql .= is_array($expression[1]) ? ' ('.implode(',',$expression[1]).') ' : $expression[1];
+                }else{
+                    $sql .= $k.' = '.$expression;
+                }
+                ++$index;
+            }
+        }
+        return $sql;
+    }
     /**
      * 手动执行一条SQL语句
      * @param $sql
@@ -157,7 +178,7 @@ class Mysql extends DbInterface{
         try{
             $sql = $this->buildSql(true);
             $list = $this->conn->query($sql);
-            return $list->fetchAll(\PDO::FETCH_ASSOC);
+            return $list->fetch(\PDO::FETCH_ASSOC);
         }catch(\PDOException $e){
             echo $e->getMessage();
         }
@@ -172,7 +193,7 @@ class Mysql extends DbInterface{
     {
         // TODO: Implement query() method.
         try{
-            $sql = $this->buildSql(false,'`'.$field.'`');
+            $sql = $this->buildSql(false,$field);
             $list = $this->conn->query($sql);
             return $list->fetchAll(\PDO::FETCH_COLUMN,0);
         }catch(\PDOException $e){
@@ -197,26 +218,184 @@ class Mysql extends DbInterface{
         }
     }
 
+    /**
+     * 插入单条数据
+     * @param $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function insert($data)
+    {
+        // TODO: Implement insert() method.
+        try{
+            if(empty(self::$table)){
+                throw new \Exception('table is undifiend');
+            }
+            $table = self::$table;
+            $sql = $this->buildInsertSql($data,false,true);
+            // 经测试  不能用 === 判断query的结果
+            // 还有    MYSQL 字段是不区分大小写的，只是用TP5的时候,框架自身做了限制
+            if($this->conn->query($sql))
+            {
+                return $this->conn->lastInsertId();
+            }
+            throw new \PDOException('insert failure');
+        }catch(\PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function filterSql($data,$sql=false,$filterColumn=true)
+    {
+        foreach ($data as $f=>$column)
+        {
+            // 解决冲突MYSQL关键词
+            $char = '`'.$f.'`';
+            unset($data[$f]);
+            if($filterColumn){
+                // 替换引号以及对数字和字符串的处理
+                $input = str_replace("'",'',$column);
+                $input = is_numeric($input) ? $input : '"'.$column.'"';
+            }else{
+                $data[$char] = $column;
+            }
+            if($sql){
+                $sql .= $char.'='.$input.',';
+            }else if($filterColumn){
+                $data[$char] = $input;
+            }
+        }
+        if($sql){
+            return $sql;
+        }
+        return $data;
+
+    }
+
+    public function buildInsertSql($data=[],$isUpdated=false,$simple=true)
+    {
+        if(empty($data)){
+            throw new \PDOException('data is array');
+        }
+        if($isUpdated){
+            $sql = 'UPDATE '.self::$table . ' SET ';
+            $sql = $this->filterSql($data,$sql);
+            $sql = substr($sql,0,strlen($sql)-1);
+            // where 查询条件
+            $sql .= $this->whereSql();
+            return $sql;
+        }
+        $number = count($data);
+        // 插入单条数据
+        if($simple){
+            $data = $this->filterSql($data);
+            $field = implode(',',array_keys($data));
+            $values = implode(',',array_values($data));
+            $sql = 'INSERT INTO '.self::$table . ' (' . $field;
+            $sql .= ') VALUES ('.$values . ')';
+            return $sql;
+        }else{
+            // 批量插入数据  $data 为二维数组  $fields 为插入数据表的字段，需要一一对应的
+            $row = $data[0];
+            $row = $this->filterSql($row,false,false);
+            $field = implode(',',array_keys($row));
+            $sql = 'INSERT INTO '.self::$table . ' (' . $field . ') VALUES ';
+            $insertData = '';
+            foreach($data as $k=>$v){
+                $v = $this->filterSql($v,false);
+                $curRowData = implode(',',$v);
+                $insertData .= '( '.$curRowData . ') ,';
+            }
+            $sql .= chop($insertData,',');
+            return $sql;
+        }
+    }
+
+    public function save($data)
+    {
+        // TODO: Implement save() method.
+        try{
+            if(empty(self::$table)){
+                throw new \Exception('table is undifiend');
+            }
+            if(empty(self::$where)){
+                throw new \Exception('where is empty');
+            }
+            $table = self::$table;
+            $sql = $this->buildInsertSql($data,true);
+            if($this->conn->query($sql))
+            {
+                return true;
+            }
+            throw new \PDOException('updated failure');
+        }catch(\PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function delete()
+    {
+        // TODO: Implement delete() method.
+        try{
+            if(empty(self::$table)){
+                throw new \PDOException('table is undifiend');
+            }
+            if(empty(self::$where)){
+                throw new \PDOException('where is empty');
+            }
+            $sql = 'DELETE FROM '.self::$table . $this->whereSql();
+            if($this->conn->query($sql))
+            {
+                return true;
+            }
+            throw new \PDOException('updated failure');
+        }catch(\PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function insertAll($data)
+    {
+        // TODO: Implement insertAll() method.
+        try{
+            if(empty(self::$table)){
+                throw new \PDOException('table is undifiend');
+            }
+            $table = self::$table;
+            $sql = $this->buildInsertSql($data,false,false);
+            if($this->conn->query($sql))
+            {
+                // 如果是批量插入，默认返回的是第一条记录的自增ID
+                $number = count($data);
+                $lastId = $this->conn->lastInsertId();
+                $result = [];
+                for($i=0;$i<$number;$i++){
+                    $result[] = $lastId+$i;
+                }
+                return $result;
+            }
+            throw new \PDOException('insert failure');
+        }catch(\PDOException $e){
+            echo $e->getMessage();
+        }
+    }
 
     public function _call_user_func($name,$arguments)
     {
         if(!empty($arguments)){
             switch($name){
                 case 'name':
+                    if(self::$table != $arguments[0]){
+                        self::$where = [];
+                        self::$field = '*';
+                        self::$join = [];
+                        self::$order = '';
+                        self::$group = '';
+                    }
                     self::$table = $arguments[0];
                     break;
                 case 'where':
-                    $agsNumber = count($arguments);
-                    switch ($agsNumber){
-                        case 2:
-                            self::$where = array_merge(self::$where,[$arguments[0]=>$arguments[1]]);
-                            break;
-                        case 3:
-                            self::$where = array_merge(self::$where,[$arguments[0]=>[$arguments[1],$arguments[2]]]);
-                            break;
-                        default:
-                            break;
-                    }
+                    $this->setWhere($arguments);
                     break;
                 case 'join':
                     $flag = '';
@@ -249,5 +428,37 @@ class Mysql extends DbInterface{
         $condition['having'] = self::$having;
         $condition['regular'] = self::$regular;
         return $condition;
+    }
+
+    public function setWhere($arguments)
+    {
+        $agsNumber = count($arguments);
+        if(is_array($arguments) && $agsNumber == 1){
+            foreach($arguments[0] as $k=>$v){
+                $curNumber = count($v);
+                $this->mergerWhere($v,$curNumber);
+            }
+        }else{
+            $this->mergerWhere($arguments,$agsNumber);
+        }
+    }
+
+    public function mergerWhere($arguments,$number)
+    {
+        switch ($number){
+            case 2:
+                self::$where = array_merge(self::$where,[$arguments[0]=>$arguments[1]]);
+                break;
+            case 3:
+                self::$where = array_merge(self::$where,[$arguments[0]=>[$arguments[1],$arguments[2]]]);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public function __destruct()
+    {
+
     }
 }
