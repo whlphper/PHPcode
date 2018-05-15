@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6ee4333f-8f52-473f-8f1c-458cf3ce24a7" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/reflection/Demo1.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/reflection/Demo2.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/space/Demo1.php" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/myphp/study/Loader.php" afterPath="$PROJECT_DIR$/myphp/study/Loader.php" />
-    </list>
+    <list default="true" id="6ee4333f-8f52-473f-8f1c-458cf3ce24a7" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -40,8 +34,8 @@
       <file leaf-file-name="Demo1.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/reflection/Demo1.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-526">
-              <caret line="86" column="14" lean-forward="false" selection-start-line="86" selection-start-column="14" selection-end-line="86" selection-end-column="14" />
+            <state relative-caret-position="286">
+              <caret line="116" column="13" lean-forward="true" selection-start-line="116" selection-start-column="13" selection-end-line="116" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -173,7 +167,7 @@
             <path>
               <item name="whlphper" type="b2602c69:ProjectViewProjectNode" />
               <item name="whlphper" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="reflection" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="20180514" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
           </expand>
           <select />
@@ -291,18 +285,17 @@
       <workItem from="1525913598969" duration="12500000" />
       <workItem from="1526000399121" duration="2000" />
       <workItem from="1526017880794" duration="8681000" />
-      <workItem from="1526258901662" duration="24703000" />
+      <workItem from="1526258901662" duration="24817000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65863000" />
+    <option name="totallyTimeSpent" value="65977000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="478" y="213" width="1936" height="1056" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.229927" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.229927" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -615,8 +608,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/reflection/Demo1.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-526">
-          <caret line="86" column="14" lean-forward="false" selection-start-line="86" selection-start-column="14" selection-end-line="86" selection-end-column="14" />
+        <state relative-caret-position="286">
+          <caret line="116" column="13" lean-forward="true" selection-start-line="116" selection-start-column="13" selection-end-line="116" selection-end-column="13" />
           <folding />
         </state>
       </provider>
